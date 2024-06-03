@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 30, 2024 at 04:37 PM
+-- Generation Time: Jun 03, 2024 at 01:10 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -52,11 +52,21 @@ INSERT INTO `banners` (`id`, `image_path`, `alt_text`, `is_active`) VALUES
 CREATE TABLE `comments` (
   `id` int NOT NULL,
   `parent_id` int DEFAULT NULL,
-  `user_id` int DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
   `product_id` int DEFAULT NULL,
   `comment` text,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `is_seller_reply` tinyint(1) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `comments`
+--
+
+INSERT INTO `comments` (`id`, `parent_id`, `username`, `product_id`, `comment`, `created_at`, `is_seller_reply`) VALUES
+(76, NULL, 'vita', 53, 'gas\r\n', '2024-06-01 13:08:24', 0),
+(77, NULL, 'vita', 54, 'oi', '2024-06-01 13:09:40', 0),
+(86, NULL, 'gilang', 53, 'halo', '2024-06-01 14:10:22', 0);
 
 -- --------------------------------------------------------
 
@@ -89,10 +99,15 @@ CREATE TABLE `detail_barang` (
 --
 
 INSERT INTO `detail_barang` (`id`, `username`, `nama_barang`, `harga_barang`, `nomor_telepon`, `kondisi`, `deskripsi_barang`, `link_maps`, `gambar_barang_1`, `gambar_barang_2`, `gambar_barang_3`, `gambar_barang_4`, `tanggal_masuk`, `jumlah_like`, `jumlah_views`, `lokasi_barang`, `kategori`) VALUES
-(53, 'reza', 'radio', 4000000.00, '08214465', 'Lecet dikit tak ngaruh', 'gas beli', NULL, 'uploads/Frame 1.png', NULL, NULL, NULL, '2024-05-30 16:11:54', 1, 1, 'kalimantan', 'elektronik'),
-(54, 'reza', 'kulkas', 2000000.00, '08975888', 'Product baru', 'ayo beli', NULL, 'uploads/Frame 2.png', NULL, NULL, NULL, '2024-05-30 16:12:43', 0, 0, 'yogyakrta', 'elektronik'),
-(55, 'reza', 'mobil', 70000000.00, '08965878', 'Retak dikit', 'ban pecah', NULL, 'uploads/Frame 5.png', NULL, NULL, NULL, '2024-05-30 16:13:34', 0, 0, 'jakarta', 'otomotif'),
-(56, 'reza', 'baju', 40000.00, '87877432', 'Lecet dikit tak ngaruh, Hancur parah seperti bangkai', 'baju bekas', NULL, 'uploads/Frame 12.png', NULL, NULL, NULL, '2024-05-30 16:18:04', 1, 15, 'bandung', 'fashion');
+(53, 'reza', 'radio', 4000000.00, '08214465', 'Lecet dikit tak ngaruh', 'gas beli', NULL, 'uploads/Frame 1.png', NULL, NULL, NULL, '2024-05-30 16:11:54', 5, 287, 'kalimantan', 'elektronik'),
+(54, 'reza', 'kulkas', 2000000.00, '08975888', 'Product baru', 'ayo beli', NULL, 'uploads/Frame 2.png', NULL, NULL, NULL, '2024-05-30 16:12:43', 3, 51, 'yogyakrta', 'elektronik'),
+(55, 'reza', 'mobil', 70000000.00, '08965878', 'Retak dikit', 'ban pecah', NULL, 'uploads/Frame 5.png', NULL, NULL, NULL, '2024-05-30 16:13:34', 3, 61, 'jakarta', 'otomotif'),
+(56, 'reza', 'baju', 40000.00, '87877432', 'Lecet dikit tak ngaruh, Hancur parah seperti bangkai', 'baju bekas', NULL, 'uploads/Frame 12.png', NULL, NULL, NULL, '2024-05-30 16:18:04', 2, 52, 'bandung', 'fashion'),
+(57, 'reza', 'cosmos', 4000000.00, '08976534', 'Product baru', 'bagus', NULL, 'uploads/Frame 4.png', NULL, NULL, NULL, '2024-05-31 18:10:08', 1, 9, 'medan', 'prabot'),
+(58, 'gilang', 'topi', 400000.00, '08976523', 'Bekas seperti baru', 'va rvca', NULL, 'uploads/Frame 11.png', NULL, NULL, NULL, '2024-06-01 11:13:17', 1, 26, 'jakarta selatan', 'fashion'),
+(59, 'gilang', 'tablet', 2000000.00, '353453453', 'Product baru', 'sfdfs', NULL, 'uploads/tablet.png', NULL, NULL, NULL, '2024-06-01 12:09:05', 2, 23, 'bogor', 'elektronik'),
+(60, 'reza', 'sdsd', 324234.00, '32423', 'Product baru', 'sdsd', NULL, 'uploads/radio.png', NULL, NULL, NULL, '2024-06-01 14:22:13', 0, 0, 'dfsf', 'otomotif'),
+(61, 'reza1', 'fsdf', 234.00, '24234', 'Product baru', 'cdcfc', NULL, 'uploads/radio.png', NULL, NULL, NULL, '2024-06-01 15:43:10', 0, 0, '3r23r', 'elektronik');
 
 -- --------------------------------------------------------
 
@@ -134,18 +149,28 @@ CREATE TABLE `notifications` (
   `id` int NOT NULL,
   `username` varchar(255) DEFAULT NULL,
   `product_id` int DEFAULT NULL,
-  `action` enum('like') NOT NULL,
+  `action` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `is_read` tinyint(1) NOT NULL DEFAULT '0'
+  `is_read` tinyint(1) NOT NULL DEFAULT '0',
+  `parent_id` int DEFAULT NULL,
+  `message` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `notifications`
 --
 
-INSERT INTO `notifications` (`id`, `username`, `product_id`, `action`, `created_at`, `is_read`) VALUES
-(18, 'reza', 56, 'like', '2024-05-30 16:18:24', 0),
-(19, 'gilang', 53, 'like', '2024-05-30 16:21:07', 0);
+INSERT INTO `notifications` (`id`, `username`, `product_id`, `action`, `created_at`, `is_read`, `parent_id`, `message`) VALUES
+(106, 'reza', 53, 'comment', '2024-06-01 13:08:24', 0, NULL, 'Ada komentar baru pada produk Anda.'),
+(107, 'vita', 53, 'like', '2024-06-01 13:09:27', 0, NULL, NULL),
+(108, 'vita', 54, 'like', '2024-06-01 13:09:33', 0, NULL, NULL),
+(109, 'reza', 54, 'comment', '2024-06-01 13:09:40', 0, NULL, 'Ada komentar baru pada produk Anda.'),
+(110, 'reza', 53, 'comment', '2024-06-01 13:21:50', 0, NULL, 'Ada komentar baru pada produk Anda.'),
+(111, 'reza', 54, 'like', '2024-06-01 13:39:56', 0, NULL, NULL),
+(112, 'vita', 54, 'comment', '2024-06-01 14:02:15', 0, 77, 'Ada balasan komentar pada produk Anda.'),
+(119, 'reza', 53, 'comment', '2024-06-01 14:10:22', 0, NULL, 'Ada komentar baru pada produk Anda.'),
+(124, 'gilang', 53, 'comment', '2024-06-01 14:14:29', 0, 86, 'Ada balasan komentar pada produk Anda.'),
+(125, 'reza', 53, 'like', '2024-06-01 14:15:47', 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -171,7 +196,8 @@ INSERT INTO `users` (`id`, `username`, `password`, `phone_number`, `address`, `r
 (57, 'feb', '$2y$10$KuULX4t54CySnjq6JwvZv.aRAG0Wy8iRrm4kCfWjcoNOFdesuAbge', '081344843648', 'jalan swadaya3', 'admin', 'uploads/feb_6654f86969c1b.jpg'),
 (59, 'reza', '$2y$10$LV8dZiHd2ZcjBX6lGzdeyOujLkYbp996FrRH50D31FTx2Ot9P/rJm', '081324567890', 'jalan seturan', 'user', 'uploads/reza_6654ff527bc95.png'),
 (60, 'raka', '$2y$10$uFjHEfB2kITddspGZAF.l.JzdFlzoQavBP3SmIOWEwCTQ2Ds5khK2', '081234560987', 'kost hammer', 'user', NULL),
-(63, 'gilang', '$2y$10$fFixX0EX1BnD8gpEcOfVB./Gb/fnky5sxkCVptEOUYSpoRxtmvCuq', '089768578', 'kalimantan', 'user', NULL);
+(63, 'gilang', '$2y$10$fFixX0EX1BnD8gpEcOfVB./Gb/fnky5sxkCVptEOUYSpoRxtmvCuq', '089768578', 'kalimantan', 'user', NULL),
+(64, 'vita', '$2y$10$t2GiQZSGNo6u17BNuDPlmedDlyBpdUPMwAZZc9tmaOgFwFfDR1rYG', '09707', 'kuningan', 'user', NULL);
 
 -- --------------------------------------------------------
 
@@ -191,8 +217,10 @@ CREATE TABLE `user_likes` (
 --
 
 INSERT INTO `user_likes` (`id`, `username`, `product_id`, `like_time`) VALUES
-(132, 'reza', 56, '2024-05-30 16:18:24'),
-(133, 'gilang', 53, '2024-05-30 16:21:07');
+(161, 'vita', 53, '2024-06-01 13:09:27'),
+(162, 'vita', 54, '2024-06-01 13:09:33'),
+(163, 'reza', 54, '2024-06-01 13:39:56'),
+(164, 'reza', 53, '2024-06-01 14:15:47');
 
 --
 -- Indexes for dumped tables
@@ -209,7 +237,7 @@ ALTER TABLE `banners`
 --
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`),
+  ADD KEY `username` (`username`),
   ADD KEY `product_id` (`product_id`);
 
 --
@@ -260,13 +288,13 @@ ALTER TABLE `banners`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
 
 --
 -- AUTO_INCREMENT for table `detail_barang`
 --
 ALTER TABLE `detail_barang`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT for table `items`
@@ -278,19 +306,19 @@ ALTER TABLE `items`
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT for table `user_likes`
 --
 ALTER TABLE `user_likes`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=134;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=165;
 
 --
 -- Constraints for dumped tables
@@ -300,7 +328,7 @@ ALTER TABLE `user_likes`
 -- Constraints for table `comments`
 --
 ALTER TABLE `comments`
-  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`),
   ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `detail_barang` (`id`);
 
 --
