@@ -16,15 +16,9 @@ if ($result->num_rows == 1) {
 
     // Memeriksa kecocokan password menggunakan password_verify()
     if (password_verify($password, $user['password'])) {
-        // Jika username dan password cocok, atur sesi dan redirect berdasarkan role
+        // Jika username dan password cocok, atur sesi dan redirect ke halaman dashboard
         $_SESSION['username'] = $username;
-        $_SESSION['role'] = $user['role'];
-
-        if ($user['role'] == 'admin') {
-              header("location:admin_dashboard.php");
-        } else {
-            header('Location: dashboard.php');
-        }
+        header('Location: validasilogin.php');
         exit;
     } else {
         // Jika password tidak cocok, kembalikan ke halaman login dengan pesan error

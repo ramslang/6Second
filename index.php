@@ -60,7 +60,46 @@
 
     </div>
 
+    <!--  
+  
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-semibold text-center mb-8">Welcome to our Marketplace</h1>
 
+        <div class="flex justify-end mb-4">
+            <a href="login.php" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">Login</a>
+            <a href="register.php" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Register</a>
+        </div>
+
+
+        <?php
+        // Establish database connection
+
+        // require_once 'koneksi.php';
+
+        // // Fetch items from the database
+        // $query = "SELECT * FROM items";
+        // $result = mysqli_query($connection, $query);
+
+        // // Display items
+        // echo "<h2>Items Available</h2>";
+        // while ($row = mysqli_fetch_assoc($result)) {
+        //     echo "<div>";
+        //     echo '<img src="' . $row['image_path'] . '" alt="' . $row['description'] . '" style="width: 360px;">';
+        //     echo '</div>';
+        //     echo '<p class="text-gray-700 text-base">Descripsi : ' . $row['description'] . '</p>';
+        //     echo '<p class="text-gray-700 text-base">Uploaded by: ' . $row['uploaded_by'] . '</p>';
+        //     // echo '<p class="text-gray-700 text-base">Category: ' . $row['category'] . '</p>';
+
+        //     echo "</div>";
+        // }
+
+        // // Close database connection
+        // mysqli_close($connection);
+        ?>
+
+       
+
+    </div> -->
 </body>
 
 </html>
